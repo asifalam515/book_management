@@ -5,7 +5,7 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri =
   "mongodb+srv://asibul2342:RkFttONzDrsflaMZ@cluster0.6tngyrc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -43,6 +43,13 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
       console.log(result);
+    });
+    // delete data
+    app.delete("/books/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await booksCollection.deleteOne(query);
+      res.send(result);
     });
   } finally {
     // Ensures that the client will close when you finish/error
