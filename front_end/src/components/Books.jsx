@@ -26,15 +26,14 @@ const Books = () => {
         {loadedData.map((book) => (
           <li key={book._id}>
             {book.name} :: {book.author} ::{" "}
-            <Link>
-              <button
-                onClick={() => {
-                  handleDelete(book._id);
-                }}
-              >
-                X
-              </button>
-            </Link>
+            <button
+              onClick={() => {
+                handleDelete(book._id);
+              }}
+            >
+              X
+            </button>
+            <Link to={`/update/${book._id}`}>Update</Link>
           </li>
         ))}
       </div>

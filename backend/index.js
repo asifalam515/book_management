@@ -51,6 +51,33 @@ async function run() {
       const result = await booksCollection.deleteOne(query);
       res.send(result);
     });
+    // get a specific data
+    app.get("/books/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const books = await booksCollection.findOne(query);
+      res.send(books);
+    });
+    // now update the specific data
+    app.put("/books/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedBook = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateBook = {
+        $set: {
+          name: updatedBook.name,
+          author: updatedBook.author,
+        },
+      };
+      const result = await booksCollection.updateOne(
+        filter,
+        updateBook,
+        options
+      );
+      res.send(result);
+      console.log(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
